@@ -21,6 +21,9 @@ class spectro:
             sys.exit() 
 
         llines = len(lines)
+        num_taup = []
+        num_de = 0
+        num_he = 0
         num_dj = 0
         num_hj = 0
         num_be = 0
@@ -34,6 +37,15 @@ class spectro:
         ntors  = int(lines[18].split()[2])
         
         for line in lines:
+            if line[1:5] == 'TAUP':
+                num_taup.append(lines.index(line))
+                continue
+            if line[1:4] == 'De ':
+                num_de = lines.index(line)
+                continue
+            if line[1:4] == 'He ':
+                num_he = lines.index(line)
+                continue
             if line[2:6] == 'D J ':                      # Reduced H
                 num_dj = lines.index(line)
                 continue
@@ -49,7 +61,26 @@ class spectro:
             if line[:42] == '        VIBRATIONALLY AVERAGED COORDINATES':
                 num_coord = lines.index(line) + 8
                 break
-        
+
+        ### Quartic centrifugal distortion constants TAU ###
+        taup = {}
+        for i in num_taup:
+            c = lines[i].split()
+            key = c[0]+c[1]
+            taup[key] = map(float,c[2:4])
+
+        if num_de != 0:
+            de = map(float,lines[num_de].split()[1:3])
+        else:
+            print " Error: cannot find De in " + spectrof
+            de = 'None'
+
+        if num_he != 0:
+            he = map(float,lines[num_he].split()[1:3])
+        else:
+            print " Error: cannot find He in " + spectrof
+            he = 'None'
+
         ### Constants in S-reduced Hamiltonian DJ ###
         if num_dj != 0:
             dj = {}
@@ -120,4 +151,106 @@ class spectro:
                 c = lines[j].split()
                 vib_state[key].append(map(float, c[-3:]))   # [Requil, Rg, Ralpha]
         
-        self.data = {'vib_state': vib_state, 'Be': be_const, 'DJ': dj, 'HJ': hj}
+        self.data = {'taup': taup, 'De': de, 'He': he, 'vib_state': vib_state, 'Be': be_const, 'Bs': bs_const, 'DJ': dj, 'HJ': hj}
+
+
+
+    def write(self,outf):
+        if ( isinstance(outf,file) ):
+            f = outf
+        else:
+            try:
+                f = open(outf, 'w')
+            except:
+                print __name__ + " Error: failed to write " + outf
+                return False
+
+        vib = self.data['vib_state']
+        be  = self.data['Be']
+        bs  = self.data['Bs']
+        dj  = self.data['DJ']
+        hj  = self.data['HJ']
+        de  = self.data['De']
+        he  = self.data['He']
+        tp  = self.data['taup']
+        
+        if be != 'None':
+            for key in be.keys():
+                f.write('%-20s'%('Be/'+key))
+                for i in be[key]:
+                    f.write('%20.5f'%i)
+                f.write('\n')
+        else:
+            f.write('%-20s%20s'%('Be',be))
+            
+
+        if bs != 'None':
+            f.write('%-20s'%('B0/'+key))
+            for key in bs:
+                f.write('%20.5f'%i)
+            f.write('\n')
+        else:
+            f.write('%-20s%20s'%('B0',bs))
+
+        if dj != 'None':
+            for key in sorted(dj.keys()):
+                f.write('%-20s'%(key+'/cm-1'))
+                f.write('%20.5e'%dj[key][0])
+                f.write('            ')
+                f.write('%-20s'%(key+'/MHz'))
+                f.write('%20.5f'%dj[key][1])
+                f.write('\n')
+        else:
+            f.write('%-20s%20s\n'%('DJ',dj))
+
+        if hj != 'None':
+            for key in sorted(hj.keys()):
+                f.write('%-20s'%(key+'/cm-1'))
+                f.write('%20.5e'%hj[key][0])
+                f.write('            ')
+                f.write('%-20s'%(key+'/MHz'))
+                f.write('%20.5f'%hj[key][1])
+                f.write('\n')
+        else:
+            f.write('%-20s%20s\n'%('HJ',hj))
+
+        if de != 'None':
+            f.write('%-20s'%('De'+'/cm-1'))
+            f.write('%20.5e'%de[0])
+            f.write('            ')
+            f.write('%-20s'%('De'+'/MHz'))
+            f.write('%20.5f'%de[1])
+            f.write('\n')
+        else:
+            f.write('%-20s%20s\n'%('De','None'))
+
+        if he != 'None':
+            f.write('%-20s'%('He'+'/cm-1'))
+            f.write('%20.5e'%he[0])
+            f.write('            ')
+            f.write('%-20s'%('He'+'/MHz'))
+            f.write('%20.5f'%he[1])
+            f.write('\n')
+        else:
+            f.write('%-20s%20s\n'%('He','None'))
+
+        for key in sorted(tp.keys()):
+            f.write('%-20s'%(key+'/cm-1'))
+            f.write('%20.5e'%tp[key][0])
+            f.write('            ')
+            f.write('%-20s'%('key'+'/MHz'))
+            f.write('%20.5f'%tp[key][1])
+            f.write('\n')
+
+        for key in sorted(vib.keys()):
+            for i in key:
+                f.write('%-8s'%i)
+            f.write('\n')
+            for j in range(len(vib[key])):
+                for k in range(3):
+                    f.write('%20.6f'%vib[key][j][k])
+                f.write('\n')
+
+        f.close()
+
+            
