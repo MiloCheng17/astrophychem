@@ -18,7 +18,7 @@ class spectro:
             f.close()
         except:
             print __name__ + " Error: cannot read " + spectrof
-            raise
+            sys.exit() 
 
         llines = len(lines)
         num_dj = 0
@@ -59,8 +59,8 @@ class spectro:
                 key = c[0]+c[1]
                 dj[key] = map(float,c[-2:])
         else:
-            print "Error: cannot find Constants in S-reduced Hamiltonian DJ!"
-            raise
+            print spectrof + " Error: cannot find Constants in S-reduced Hamiltonian DJ!"
+            dj = 'None'
         
         ### Constants in S-reduced Hamiltonian HJ ###
         if num_hj != 0:
@@ -74,24 +74,23 @@ class spectro:
                     cd = cd.replace("D","E")
                     hj[key].append(float(cd))
         else:
-            print "Error: cannot find Constants in S-reduced Hamiltonian HJ!"
-            raise
-        
+            print spectrof + " Error: cannot find Constants in S-reduced Hamiltonian HJ!"
+            hj = 'None'
         ### Equilibrium rotational constants ###
         if num_be != 0:
             be_const = {} 
             be_const['CM-1'] = map(float,lines[num_be].split())
             be_const['MHz']  = map(float,lines[num_be+1].split()[1::3])   
         else:
-            print "Error: cannot find Equilibrium rotational constants Be!"
-            raise
+            print spectrof + " Error: cannot find Equilibrium rotational constants Be!"
+            be_const = 'None'
         
         ### S-reduced rotational constants ###
         if num_bs != 0:
             bs_const = map(float, lines[num_bs].split())                # Bs[:] in CM-1
         else:
-            print "Error: cannot find Equilibrium rotational constants Bs!"
-            raise
+            print spectrof + " Error: cannot find Equilibrium rotational constants Bs!"
+            bs_const = 'None'
 
         ### Vibrationally averaged coordinates ###
         vib_state = {}
@@ -107,10 +106,18 @@ class spectro:
         ed.pop(0)
         
         for num in range(num_vib):
-            key = tuple(lines[st[num]].split(':')[-1].split())  # key is tuple ('0','0','0')
+            key = ()
+            for n in range(20):
+                if ':' in lines[st[num]+n]:
+                    c = lines[st[num]+n].split(':')
+                    key += tuple(c[0].split())
+                    key += tuple(c[-1].split())
+#            key = tuple(lines[st[num]].split(':')[-1].split())  # key is tuple ('0','0','0')
+                else:
+                    break
             vib_state[key] = []
-            for j in range(st[num]+4,ed[num]):
+            for j in range(st[num]+n+3,ed[num]):
                 c = lines[j].split()
-                vib_state[key].append(map(float, c[2:5]))   # [Requil, Rg, Ralpha]
+                vib_state[key].append(map(float, c[-3:]))   # [Requil, Rg, Ralpha]
         
         self.data = {'vib_state': vib_state, 'Be': be_const, 'DJ': dj, 'HJ': hj}
