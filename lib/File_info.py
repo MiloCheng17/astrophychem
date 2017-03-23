@@ -67,8 +67,8 @@ from numpy import *
 #    return change_geom, energy
 
 
-def get_geom_change(base_dir):    # anpass output file
-    anpass = base_dir + '/anpass.out'
+def get_geom_change(anpass):    # anpass output file
+#    anpass = base_dir + '/anpass.out'
     change_geom = [] 
     f = open(anpass,'r')
     lines = f.read()
