@@ -110,7 +110,7 @@ class spectro:
         ### Equilibrium rotational constants ###
         if num_be != 0:
             be_const = {} 
-            be_const['CM-1'] = map(float,lines[num_be].split())
+            be_const['cm-1'] = map(float,lines[num_be].split())
             be_const['MHz']  = map(float,lines[num_be+1].split()[1::3])   
         else:
             print spectrof + " Error: cannot find Equilibrium rotational constants Be!"
@@ -118,7 +118,7 @@ class spectro:
         
         ### S-reduced rotational constants ###
         if num_bs != 0:
-            bs_const = map(float, lines[num_bs].split())                # Bs[:] in CM-1
+            bs_const = map(float, lines[num_bs].split())                # Bs[:] in cm-1
         else:
             print spectrof + " Error: cannot find Equilibrium rotational constants Bs!"
             bs_const = 'None'
@@ -185,8 +185,8 @@ class spectro:
             
 
         if bs != 'None':
-            f.write('%-20s'%('B0/'+key))
-            for key in bs:
+            f.write('%-20s'%('B0/'+'cm-1'))
+            for i in bs:
                 f.write('%20.5f'%i)
             f.write('\n')
         else:
@@ -208,8 +208,8 @@ class spectro:
                 f.write('%-20s'%(key+'/cm-1'))
                 f.write('%20.5e'%hj[key][0])
                 f.write('            ')
-                f.write('%-20s'%(key+'/MHz'))
-                f.write('%20.5f'%hj[key][1])
+                f.write('%-20s'%(key+'/kHz'))
+                f.write('%20.5f'%float(hj[key][1]/1000))
                 f.write('\n')
         else:
             f.write('%-20s%20s\n'%('HJ',hj))
@@ -228,8 +228,8 @@ class spectro:
             f.write('%-20s'%('He'+'/cm-1'))
             f.write('%20.5e'%he[0])
             f.write('            ')
-            f.write('%-20s'%('He'+'/MHz'))
-            f.write('%20.5f'%he[1])
+            f.write('%-20s'%('He'+'/kHz'))
+            f.write('%20.5f'%float(he[1]/1000))
             f.write('\n')
         else:
             f.write('%-20s%20s\n'%('He','None'))
@@ -238,7 +238,7 @@ class spectro:
             f.write('%-20s'%(key+'/cm-1'))
             f.write('%20.5e'%tp[key][0])
             f.write('            ')
-            f.write('%-20s'%('key'+'/MHz'))
+            f.write('%-20s'%(key+'/MHz'))
             f.write('%20.5f'%tp[key][1])
             f.write('\n')
 
