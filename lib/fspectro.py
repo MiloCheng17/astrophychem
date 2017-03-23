@@ -118,10 +118,14 @@ class spectro:
         
         ### S-reduced rotational constants ###
         if num_bs != 0:
-            bs_const = map(float, lines[num_bs].split())                # Bs[:] in cm-1
+            bs_const = []
+            bs_const_change = map(float, lines[num_bs].split())
+            ### in which order xyz abc????
+            for change in range(len(bs_const_change)):
+                bs_const.append(bs_const_change[change] + be_const['cm-1'][change])               # Bs[:] in cm-1
         else:
             print spectrof + " Error: cannot find Equilibrium rotational constants Bs!"
-            bs_const = 'None'
+            bs_const = be_const['cm-1']
 
         ### Vibrationally averaged coordinates ###
         vib_state = {}
