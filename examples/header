@@ -1,0 +1,11 @@
+ ***,CuCCH Singlet Ap [RHF-CCSD(T)/apTZ] SP Energy Calc # 1
+ memory,620,m
+ 
+  gthresh,energy=1.d-12
+  print, orbitals,basis
+ 
+ geomtyp=xyz
+ bohr
+ geometry={
+ 4
+ CuCCH

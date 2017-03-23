@@ -1,0 +1,6 @@
+## provide dir where intder.in and energy data locates ##
+/home/qcheng1/projects/astrophychem/scripts/write_anpss_input.py anpass.in ../ /home/qcheng1/projects/cu-rovib/CuOH/1ap/av5z-dk-intder/
+/home/qcheng1/projects/astrophychem/scripts/write_anpss_input.py anpass2.in ../ /home/qcheng1/projects/cu-rovib/CuOH/1ap/av5z-dk-intder/
+
+## provide where the reference geom dir is, also need to have a template file ##
+/home/qcheng1/projects/astrophychem/scripts/write_intder_input.py intder_freqs.in ../data/

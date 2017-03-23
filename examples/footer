@@ -1,0 +1,9 @@
+  }
+ 
+ basis=av5z-dk
+ dkho=2
+ {rhf;wf,42,1,0;start,atdens;save,2100.2;}
+ {ccsd(t),maxit=200,shifts=0.2,shiftp=0.2,thrdis=1.0;diis,1,1,15,1;orbit,2100.2;}
+
+ ---
+
