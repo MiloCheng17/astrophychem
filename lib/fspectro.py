@@ -27,7 +27,7 @@ class spectro:
         num_dj = 0
         num_hj = 0
         num_be = 0
-        num_bs = 0
+        num_bs = []
         num_coord = 0
 
         nbond  = int(lines[14].split()[2])
@@ -36,6 +36,10 @@ class spectro:
         nofpb  = int(lines[17].split()[2])
         ntors  = int(lines[18].split()[2])
         
+        for i in range(llines):
+            if lines[i][-4:-1] == 'BZS':                     # Bs, B0
+                num_bs.append( (i + 1) )
+
         for line in lines:
             if line[1:5] == 'TAUP':
                 num_taup.append(lines.index(line))
@@ -55,9 +59,9 @@ class spectro:
             if line[:23] == 'ROTATIONAL CONSTANTS IN':   # Be
                 num_be = lines.index(line) + 2
                 continue
-            if line[-4:-1] == 'BZS':                     # Bs, B0
-                num_bs = lines.index(line) + 1
-                continue
+#            if line[-4:-1] == 'BZS':                     # Bs, B0
+#                num_bs.append(int(lines.index(line) + 1))
+#                continue
             if line[:42] == '        VIBRATIONALLY AVERAGED COORDINATES':
                 num_coord = lines.index(line) + 8
                 break
@@ -117,12 +121,16 @@ class spectro:
             be_const = 'None'
         
         ### S-reduced rotational constants ###
-        if num_bs != 0:
+        if num_bs != []:
             bs_const = []
-            bs_const_change = map(float, lines[num_bs].split())
+            for l in range(len(num_bs)):
+
+                bs_const_change = map(float, lines[num_bs[l]].split())
             ### in which order xyz abc????
-            for change in range(len(bs_const_change)):
-                bs_const.append(bs_const_change[change] + be_const['cm-1'][change])               # Bs[:] in cm-1
+                lbs = []
+                for change in range(len(bs_const_change)):
+                    lbs.append(bs_const_change[change] + be_const['cm-1'][change])               # Bs[:] in cm-1
+                bs_const.append(lbs)               # Bs[:] in cm-1
         else:
             print spectrof + " Error: cannot find Equilibrium rotational constants Bs!"
             bs_const = be_const['cm-1']
@@ -188,11 +196,13 @@ class spectro:
             f.write('%-20s%20s'%('Be',be))
             
 
-        if bs != 'None':
-            f.write('%-20s'%('B0/'+'cm-1'))
-            for i in bs:
-                f.write('%20.5f'%i)
-            f.write('\n')
+        if bs != []:
+            #f.write('%-20s'%('B0/'+'cm-1'))
+            for j in bs:
+                f.write('%-20s'%('B0/'+'cm-1'))
+                for i in j:
+                    f.write('%20.5f'%i)
+                f.write('\n')
         else:
             f.write('%-20s%20s'%('B0',bs))
 
