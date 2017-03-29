@@ -8,7 +8,8 @@ Scripts will be helpful for reading and writing input output files, data informa
 
 export PYTHONPATH=/public/apps/python/2.7.10/gcc.4.4.7/lib/python2.7/site-packages:/public/apps/numpy/1.9.2/gcc.4.4.7/python.2.7.10/atlas.3.11.11/lib/python2.7/site-packages:/public/apps/numpy/numpy-1.9.2:$HOME/astrophychem/lib:$PYTHONPATH
 
-If you still don't know how ask!!! You need to set this up first!
+If you still do not know how, ask!!! You need to set this up first!
+You also need have a gaussian path and enviroment setup!
 
 2. Instructions for running write_anpass_input.py
 Attention: You will write your anpass.in anpass2.in in the same directory, make sure your displacement energy.dat is also in this directory, also you need to provide dir where intder.in locates
