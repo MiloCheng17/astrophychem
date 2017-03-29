@@ -4,3 +4,21 @@
 
 ## provide where the reference geom dir is, also need to have a template file ##
 /home/qcheng1/projects/astrophychem/scripts/write_intder_input.py intder_freqs.in ../data/
+
+
+
+#####################################
+# After you finish all the optimization calculations, you have av5z-dk-1.out (opt output for av5z-dk basis set), cvqz-dk-1.out (opt output for wcvqz-dk basis set), and cvqz-v-dk-1.out (opt output for wcvqz-dk basis set, but valence only). Copy the ref_info.py into your working directory. To run ref_info.py, you need to change the 'data/cucn_av5z-dk-1.out' with your directory and file name, the same for cvqz and cvqzv. You also need to copy file 'dummy' in your working directory, check your av5z-dk-1.out file, find the geometry format at the beginning, and "END of GEOMETRY OPTIMIZAION" in the almost end, replace the variable names in dummy file, for example, you have the below geometry in av5z-dk-1.out
+  geometry={angstrom
+            cu
+            c,cu,mc
+            n,c,nc,cu,180.0}
+# Also             
+ END OF GEOMETRY OPTIMIZATION.
+
+ Optimized variables
+ MC=                  1.82581374 ANGSTROM
+ NC=                  1.16608756 ANGSTROM
+ # Now you based on these information replace certain parts in dummy, keep the variable consistant in geom and variables, and all captial letters.
+ #
+ # After you run anpass.x < anpass.in > anpass.out, you copy new_geom.py here, you should have the dummy file, the ref.int file, replace 'data/cucn_anpass.out' with your anpass.out directory and name. 
