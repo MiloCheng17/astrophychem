@@ -165,12 +165,13 @@ def get_ff(f03):
     ff = dat[:,-1]
     f = open('force_constants','w')
     for i in range(dat.shape[0]):
-        name = 'F'
+        name = 'F$_{'
         for j in range(4):
             if dat[i,j] != 0:
                 name += str(int(dat[i,j]))
-        if len(name) > 2:
-            f.write('%-9s'%name)
+        name += '}$'
+        if len(name) > 7:
+            f.write('%-12s'%name)
             f.write('%10.5f\n'%ff[i])
             print '%6d%5d%5d%5d%20.12f'%(dat[i,0],dat[i,1],dat[i,2],dat[i,3],dat[i,4])
     f.close()
