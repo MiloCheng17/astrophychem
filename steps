@@ -1,26 +1,30 @@
-mkdir av5z-dk, cvqz-dk, cvqz-v-dk, ln -s 1.out in each dir
-ln -s dummy, intder_template, intder.in, energy.dat
-cp /home/qcheng1/projects/cu-rovib/CuOH/data/getoptinfo.py .
-change dir accordingly
-python getoptinfo.py
-cp /home/qcheng1/projects/cu-rovib/CuOH/data/run.py .
-./run.py
-/home/qcheng1/projects/astrophychem/scripts/write_anpss_input.py anpass.in ./ ./
+Step1: Generate energy files
+Make a energy directory, cp over all the energy files from different levels to here.
+Run the scripts to get composite energy and different corrections.
+
+Step2: Spectro analysis
+In different energy correction dir, cp ref.int, intder_template, intder.in, energy.dat
+If need to use relative energies, then need to move absolute energy to energy-old.dat, use gen-refe.py to generate energy.dat 
+cp run.py  run.sh run1.sh to working directory.
+
+write_anpss_input.py anpass.in ./ ./
+if it has symmetry then write_anpss_input.py anpass.in ./ ./ c2v (same apply to anpass2.in)
 anpass.x < anpass.in > anpass.out
 /home/qcheng1/projects/astrophychem/scripts/write_anpss_input.py anpass2.in ./ ./
 anpass.x < anpass2.in > anpass2.out
 ./run.py
 
-/home/qcheng1/projects/astrophychem/scripts/write_intder_input.py intder_freqs.in ./
+write_intder_input.py intder_freqs.in ./
 Yes
 2
 CU63         C12         C12          H1
 
+May need to change certain parts in intder_freqs.in (double check)
 Intder2005 < intder_freqs.in > intder_freqs.out
 cp file15 fort.15
 cp file20 fort.30
 cp file24 fort.40
-cp ../spectro.in .
+cp proper spectro.in .
 change geom with 1.inp-cart.bohr
 spec3jm.ifort-O0.static.x < spectro.in > spectro.out
 change Cu in coord
