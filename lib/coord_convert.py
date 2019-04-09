@@ -19,7 +19,7 @@ def inter_cart(dummy,input,output,geom,variables):
         if lines[i][0] == '0':
             num1 = i+1
             continue
-        if lines[i][2:11] == 'Variables': 
+        if 'Variables' in lines[i]: 
             num = i+1
             break
     atoms = []
@@ -36,8 +36,8 @@ def inter_cart(dummy,input,output,geom,variables):
         f.write('%s %9.8f\n'%(key,geom[idx]))
     f.write(lines[l-1])
     f.close()
-    run_system('g09.profile')
-    cmd = 'newzmat -izmat -ocart ' + input + ' ' + output
+#    run_system('g09.profile')
+    cmd = '/public/apps/gaussian/g16/newzmat -izmat -ocart ' + input + ' ' + output
     run_system(cmd)
     
 

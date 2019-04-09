@@ -1,6 +1,8 @@
 import os, sys, re
 from numpy import *
+from decimal import *
 
+getcontext().prec = 20
 #def get_opt_info(base_dir):   ### opt output file
 #    geom = {}
 #    xyz = {}
@@ -67,8 +69,8 @@ from numpy import *
 #    return change_geom, energy
 
 
-def get_geom_change(anpass):    # anpass output file
-#    anpass = base_dir + '/anpass.out'
+def get_geom_change(base_dir):    # anpass output file
+    anpass = base_dir + '/anpass.out'
     change_geom = [] 
     f = open(anpass,'r')
     lines = f.read()
@@ -76,18 +78,25 @@ def get_geom_change(anpass):    # anpass output file
 
     ### read internal coord unit in Angstroms ###
     inter = re.search( r'M I N I M U M\n.*?\n0EIGENVALUE\(S\)', lines, re.DOTALL)
+    #inter = re.search( r'M A X I M U M\n.*?\n0EIGENVALUE\(S\)', lines, re.DOTALL)
     c = inter.group(0).split('\n')
     energy = float(c[2].split()[-1])
-    geom = c[3:-2]
-    for i in range(len(geom)):
-        change_geom.append( float(geom[i].split()[-1]) )
+    #geom = c[3:-2]
+    #for i in range(len(geom)):
+    #    value = float(geom[i].split()[-1])
+#   #     change_geom.append( float(geom[i].split()[-1]) )
+    change_geom = array(c[-2].split()[:-1]).astype(float)
+#   # print change_geom
+#    change_geom = array(c[-2].split()[:-1]).astype(float)
+#    energy = array(c[-2].split()[-1]).astype(float)
+    
     return change_geom, energy
 
 
 def get_new_geom(ref_geom,geom_change):  ### order of keys match geom_change
     new_geom = []
     for key in range(len(ref_geom)):
-        print ref_geom[key],  geom_change[key]
+#        print ref_geom[key],  geom_change[key]
         new_geom.append( float(ref_geom[key] + geom_change[key]) )
     return new_geom
 
@@ -149,7 +158,7 @@ def get_ref_geom(input):  ### order of keys match geom_change, gaussian format i
     variables = []
     l = len(lines)
     for i  in range(l):
-        if lines[i][2:11] == 'Variables': 
+        if 'Variables' in lines[i]: 
             num = i+1
             break
     for k in range(num,l-1):
