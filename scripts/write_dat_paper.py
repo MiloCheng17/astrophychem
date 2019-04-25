@@ -122,10 +122,7 @@ class spectro:
             de = 'None'
 
         if num_he != 0:
-		    try:
-                he = map(float,lines[num_he].split()[1:3])
-		    except:
-                he = map(str,lines[num_he].split()[1:3])	# in case there is *** in line ##
+            he = map(str,lines[num_he].split()[1:3])	# in case there is *** in line ##
         else:
             print " Error: cannot find He in " + spectrof
             he = 'None'
@@ -183,7 +180,7 @@ class spectro:
 
         ### Eigenvalues ###
         if num_eig != 0 and "**" not in lines[num_eig]:
-            eigen_val = map(float,lines[num_eig].split())
+            eigen_val = map(str,lines[num_eig].split())
    #     if num_eig != 0:
    # 	    if "**" not in lines[num_eig]:
    #             eigen_val = map(float,lines[num_eig].split())
@@ -336,7 +333,7 @@ class spectro:
             try:
                 f.write('%-30s %8s %20.6f\n'%('$H_e$/Hz','&',float(he[1])))
             except:
-                f.write('%-30s %8s %20s\n'%('$H_e$/Hz','&',float(he[1])))
+                f.write('%-30s %8s %20s\n'%('$H_e$/Hz','&',he[1]))
         f.write('\n')
     
     
