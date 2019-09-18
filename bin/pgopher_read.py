@@ -2,7 +2,7 @@ import os, sys, re
 from xlrd import *
 from numpy import *
 
-loc = ("/media/sf_Documents/Projects/scc2/pgopher/%s"%sys.argv[1])
+loc = ("%s"%sys.argv[1])
 wb = open_workbook(loc)
 #sheet = wb.sheet_by_name("%s"%sys.argv[2])
 sheet = wb.sheet_by_name("Final S-reduced")
@@ -27,7 +27,7 @@ for i in range(sheet.nrows-1):
         idx.append(str(round(sheet.cell_value(i+1,j),1)))
     for j in [27,34]:
         idx.append(str(int(sheet.cell_value(i+1,j))))
-    if (edata == idx).all(axis=1).nonzero()[0] != None and (edata == idx).all(axis=1).any():    
+    if (edata == idx).all(axis=1).nonzero()[0].size > 0 and (edata == idx).all(axis=1).any():    
 #        print( int((edata == idx).all(axis=1).nonzero()[0]) )
         match_id.append([int((edata == idx).all(axis=1).nonzero()[0]),i+1])
 #    match_id.append(int( where((edata == idx).all(axis=1))[0] ))    
