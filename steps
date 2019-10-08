@@ -1,3 +1,9 @@
+Before create inp directory (have reference geometry ready):
+step1: Generate ref.int file as in example
+
+
+
+
 Step1: Generate energy files
 Make a energy directory, cp over all the energy files from different levels to here.
 Run the scripts to get composite energy and different corrections.

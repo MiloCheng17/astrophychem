@@ -35,8 +35,8 @@ for i in range(sheet.nrows-1):
 
 #print(sheet.cell_value(0,1))
 #print(match_id)
-print("%3s %3s %3s -> %-3s %-3s %-3s %5s -> %-5s %3s -> %-3s %9s %9s %9s"%("N'","Ka'","Kc'", 'N"','Ka"','Kc"',"J'",'J"',"F'",'F"','v_obs','v_comp','v_diff'))
+print("%6s %6s %3s %3s %3s -> %-3s %-3s %-3s %5s -> %-5s %3s -> %-3s %12s %12s %12s"%("obs","comp","N'","Ka'","Kc'", 'N"','Ka"','Kc"',"J'",'J"',"F'",'F"','nu_obs','nv_comp','nu_diff'))
 for i in range(len(match_id)):
     m = match_id[i][0]
     n = match_id[i][1]
-    print("%3s %3s %3s -> %-3s %-3s %-3s %5s -> %-5s %3s -> %-3s %9.3f %9.3f %9.3f"%(edata[m,0],edata[m,1],edata[m,2],edata[m,3],edata[m,4],edata[m,5],edata[m,6],edata[m,7],edata[m,8],edata[m,9],rot[m,0],sheet.cell_value(n,9),rot[m,0]-sheet.cell_value(n,9)))
+    print("%6d %6d %3s %3s %3s -> %-3s %-3s %-3s %5s -> %-5s %3s -> %-3s %12.3f %12.3f %12.3f"%(match_id[i][0]+1,match_id[i][1]+1,edata[m,0],edata[m,1],edata[m,2],edata[m,3],edata[m,4],edata[m,5],edata[m,6],edata[m,7],edata[m,8],edata[m,9],rot[m,0],sheet.cell_value(n,9),rot[m,0]-sheet.cell_value(n,9)))
