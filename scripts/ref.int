@@ -1,0 +1,15 @@
+%nproc=8
+%mem=15GB
+%chk=1.chk
+#p b3lyp/sto-3g freq scf=(xqc,conver=6,maxcycle=1024,maxcon=256) 
+
+energy 
+
+0   1
+C
+SC  1 SCC
+C   2 SCC 1 SCCA   
+    Variables:
+SCC 2.05069690
+SCCA 36.10163881
+
