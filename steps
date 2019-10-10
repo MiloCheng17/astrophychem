@@ -19,7 +19,11 @@ Step1: Generate energy files
        Then run python3 ~/git/astrophychem/bin/gen-refe.py to get a file "energy.dat" for relative energy
 
 Step2: 
-       In the energy dirs, make sure you have ref.int, intder_template, intder.in, energy.dat
+       In the energy dirs, make sure you have ref.int, intder_template, intder.in, energy.dat, 
+       also need to change files content:
+       ref.int (need to change to the correct reference geom)
+       intder_template, need to change according to intder.in
+
        #If need to use relative energies, then need to move absolute energy to energy-old.dat, use gen-refe.py to generate energy.dat 
        cp run.py run.sh run1.sh from ~/git/astrophychem/scripts/ to your working directory, modify those scripts accordingly.
 
