@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from coord_convert import *
 from File_info import *
 from fopt import *

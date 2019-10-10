@@ -1,38 +1,63 @@
 Before create inp directory (have reference geometry ready):
-step1: Generate ref.int file as in example
+Step1: Generate ref.int file as in example. Make sure the charge and multiplicity is 0 and 1!
+Step2: Run "python3 ~/git/astrophychem/bin/g16-angs-to-bohr.py"
+Step3: Copy geomtry from ref.out-bohr into intder.in and make sure the alignment of the geomtry
+Step4: Run "Intder2005 < intder.in > intder.out" to generate the file07
+       Double check the geomtry in the section "VALUES OF SIMPLE INTERNAL COORDINATES (ANG. OR DEG.) FOR REFERENCE GEOMETRY" in the intder.out file
+Step5: Modify molpro.py file to create the inp directory and 1.inp in each displacement sub-directory
+       MAKE SURE to change proper molecule name, number of atoms, basis, charge, spin, etc!!!
+       
 
 
-
+After finish getting the energy points from each of the displacement calculation:
 
 Step1: Generate energy files
-Make a energy directory, cp over all the energy files from different levels to here.
-Run the scripts to get composite energy and different corrections.
+       Make a energy directory, (if you have different corrections then make different directory for them and get energy files for different corrections).
+       In the composite energy and different energy correction directories:
+       You can run a for loop as "for i in {001..625}; do grep "UCCSD(T)/aug-cc-pVDZ energy=" /home/dagbaglo/chem/mgccc/qff/qff-1-linear-triplet/avdz/inp/mgccc$i/1.out >> energy-old.dat"
+       Make sure you change the theory/basis-set, directory name (here is for mgccc)
+       Then run python3 ~/git/astrophychem/bin/gen-refe.py to get a file "energy.dat" for relative energy
 
-Step2: Spectro analysis
-In different energy correction dir, cp ref.int, intder_template, intder.in, energy.dat
-If need to use relative energies, then need to move absolute energy to energy-old.dat, use gen-refe.py to generate energy.dat 
-cp run.py  run.sh run1.sh to working directory.
+Step2: 
+       In the energy dirs, make sure you have ref.int, intder_template, intder.in, energy.dat
+       #If need to use relative energies, then need to move absolute energy to energy-old.dat, use gen-refe.py to generate energy.dat 
+       cp run.py run.sh run1.sh from ~/git/astrophychem/scripts/ to your working directory, modify those scripts accordingly.
 
-write_anpss_input.py anpass.in ./ ./
-if it has symmetry then write_anpss_input.py anpass.in ./ ./ c2v (same apply to anpass2.in)
-anpass.x < anpass.in > anpass.out
-/home/qcheng1/projects/astrophychem/scripts/write_anpss_input.py anpass2.in ./ ./
-anpass.x < anpass2.in > anpass2.out
-./run.py
+Step3: Generate anpass files
+       Run "python3 ~/git/astrophychem/bin/write_anpss_input.py anpass.in ./ ./"
+       It will pop up "What is the run titile: " you just type "anpass" then press enter
+       if molecule has c2v symmetry then run "python3 ~/git/astrophychem/bin/write_anpss_input.py anpass.in ./ ./ c2v" (same apply to anpass2.in)
 
-write_intder_input.py intder_freqs.in ./
-Yes
-2
-CU63         C12         C12          H1
+       Then run "anpass.x < anpass.in > anpass.out"
+       
+       Then run "python3 ~/git/astrophychem/bin/write_anpss_input.py anpass2.in ./ ./"
+       It will pop up again "What is the run titile: " you just type "anpass2" then press enter
+       Then run "anpass.x < anpass2.in > anpass2.out"
+       Then run "python3 ./run.py", Make sure the angle term is corrected if there is angle terms
 
-May need to change certain parts in intder_freqs.in (double check)
-Intder2005 < intder_freqs.in > intder_freqs.out
-cp file15 fort.15
-cp file20 fort.30
-cp file24 fort.40
-cp proper spectro.in .
-change geom with 1.inp-cart.bohr
-spec3jm.ifort-O0.static.x < spectro.in > spectro.out
-change Cu in coord
+
+Step4: Generate intder_freqs.in
+       Run "python3 ~/git/astrophychem/bin/write_intder_input.py intder_freqs.in ./"
+       It will pop up several questions:
+       Is this molecule linear?
+       Number of dummy atoms:
+       Input atoms with math, put space between two atoms: 
+       Input the directory where file fort.9903
+       Your answers to these questions will depend on molecules. For example as MGCCC, the answers will be
+        Yes
+        2
+        MG24 C12 C12 C12
+        ./
+
+       May need to change certain parts in intder_freqs.in (double check) as for 3344 force constants and other things
+       Then Run "Intder2005 < intder_freqs.in > intder_freqs.out"
+  
+Step5: Run "./run.sh"  
+       to cp file15 to fort.15, file20 to fort.30, and file24 to fort.40
+       Then cp proper spectro.in to current directory, and change geom with 1.inp-cart.bohr
+       Then run "spec3jm.ifort-O0.static.x < spectro.in > spectro.out"
+       Change Cu in coord
+       Check if there is any reasonance from spectro.out, if yes, then cp spectro.in spectro2.in, and change certain things and run spectro again
+       "spec3jm.ifort-O0.static.x < spectro2.in > spectro2.out"
 
 for cucch, need to change order of internal coord in inter_freqs.in
