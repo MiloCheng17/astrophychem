@@ -20,7 +20,9 @@ if __name__ == "__main__":
             num = line.split()[-1]
             break
     
-    lib_dir = '/home/qcheng1/bin/lib-achem'
+    hwdir = os.path.abspath('./').split('/')
+    hdir = '/'+hwdir[1]+'/'+hwdir[2]
+    lib_dir = '%s/git/astrophychem/lib3'%hdir
     if len(sys.argv) == 4:
         anpass = lib_dir+'/anpass'+num
     elif len(sys.argv) == 5:

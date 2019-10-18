@@ -30,11 +30,11 @@ Step2:
 Step3: Generate anpass files
        Run "python3 ~/git/astrophychem/bin/write_anpss_input.py anpass.in ./ ./"
        It will pop up "What is the run titile: " you just type "anpass" then press enter
-       if molecule has c2v symmetry then run "python3 ~/git/astrophychem/bin/write_anpss_input.py anpass.in ./ ./ c2v" (same apply to anpass2.in)
+       if molecule has c2v symmetry then run "python3 ~/git/astrophychem/bin/write_anpass_input.py anpass.in ./ ./ c2v" (same apply to anpass2.in)
 
        Then run "anpass.x < anpass.in > anpass.out"
        
-       Then run "python3 ~/git/astrophychem/bin/write_anpss_input.py anpass2.in ./ ./"
+       Then run "python3 ~/git/astrophychem/bin/write_anpass_input.py anpass2.in ./ ./"
        It will pop up again "What is the run titile: " you just type "anpass2" then press enter
        Then run "anpass.x < anpass2.in > anpass2.out"
        Then run "python3 ./run.py", Make sure the angle term is corrected if there is angle terms
