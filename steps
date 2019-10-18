@@ -17,6 +17,7 @@ Step1: Generate energy files
        You can run a for loop as "for i in {001..625}; do grep "UCCSD(T)/aug-cc-pVDZ energy=" /home/dagbaglo/chem/mgccc/qff/qff-1-linear-triplet/avdz/inp/mgccc$i/1.out >> energy-old.dat"
        Make sure you change the theory/basis-set, directory name (here is for mgccc)
        Then run python3 ~/git/astrophychem/bin/gen-refe.py to get a file "energy.dat" for relative energy
+       FOR displacement 743, need to move energy.dat to energy1.dat, then run "python3 ~/git/astrophychem/bin/treat-743energy.py" to get energy for 805 points
 
 Step2: 
        In the energy dirs, make sure you have ref.int, intder_template, intder.in, energy.dat, 
