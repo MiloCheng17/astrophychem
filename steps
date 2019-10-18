@@ -28,7 +28,7 @@ Step2:
        cp run.py run.sh run1.sh from ~/git/astrophychem/scripts/ to your working directory, modify those scripts accordingly.
 
 Step3: Generate anpass files
-       Run "python3 ~/git/astrophychem/bin/write_anpss_input.py anpass.in ./ ./"
+       Run "python3 ~/git/astrophychem/bin/write_anpass_input.py anpass.in ./ ./  "
        It will pop up "What is the run titile: " you just type "anpass" then press enter
        if molecule has c2v symmetry then run "python3 ~/git/astrophychem/bin/write_anpass_input.py anpass.in ./ ./ c2v" (same apply to anpass2.in)
 

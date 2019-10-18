@@ -18,6 +18,8 @@ if __name__ == "__main__":
     for line in lines:
         if line[:4] == 'DISP':
             num = line.split()[-1]
+            if num == '743':
+                num = '805'
             break
     
     hwdir = os.path.abspath('./').split('/')
