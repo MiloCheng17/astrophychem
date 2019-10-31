@@ -1,8 +1,8 @@
 1. Collect energy points for each displacement at certain level of theory calculation such as 5z at ccsdt
     The energy data file should look like /home/qcheng1/projects/feh-cation/fit1d/3d/5core/test/energy5z.txt
     First 3 lines are some calculation info, then start from 4 line, bond length, energy in increaing order of bond length
-2. Run "python3 ~/git/astrophychem/scripts/write_fit1d_run.py energy5z.txt 56,1"
-    The 56,1 correspond to atom mass of Fe and H, you need to have a ',' between them but no space
+2. Run "python3 ~/git/astrophychem/scripts/write_fit1d_run.py energy5z.txt 56,1 6"
+    The 56,1 correspond to atom mass of Fe and H, you need to have a ',' between them but no space, 6 means 6th order polynomial
 3. A file named "energy5z.txt1_run" will be generated under current directory, then you run "fit1d < energy5z.txt1_run > energy5z.txt1_run.out"
     This will run fit1d program and generate the result file in energy5z.txt1_run.out
 4. Run "python3 ~/astrophychem/scripts/extract_fit1d_info.py energy5z.txt1_run.out", it will print out re, Be, we, wexe, alpha_e, De

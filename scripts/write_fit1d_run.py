@@ -3,6 +3,7 @@ from numpy import *
 
 efile = sys.argv[1]
 iatom = sys.argv[2]
+order = int(sys.argv[3])
 
 dat=genfromtxt(efile,skip_header=3,dtype='str')
 atoms = iatom.split(',')
@@ -12,7 +13,7 @@ for i in range(1,dat.shape[1]):
     frun = open('%s%d_run'%(efile,i),'w')
     frun.write('1\n')
     frun.write('title\n')
-    frun.write('%d,5,0,0\n'%len(energy))
+    frun.write('%d,%d,0,0\n'%(len(energy),order))
     #frun.write('%d,6,0,0\n'%len(energy))
     frun.write('%10.8f\n'%median(bonds))
     for j in range(len(bonds)):
