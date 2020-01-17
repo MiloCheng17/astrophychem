@@ -88,9 +88,9 @@ for key in sorted(dict_disp.keys()):
         dat[key].append(var)
 outf = open('disp_energy.dat','w')        
 for key in sorted(dat.keys()):
-    outf.write('%6d '%key)
+    outf.write('%6d '%int(key+1))
     for i in range(len(ref_geom)):
-        outf.write('%12.8f '%dat[key][i])
+        outf.write('%12.9f '%dat[key][i])
     outf.write('\n')
 outf.close()
 

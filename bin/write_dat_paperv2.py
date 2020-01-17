@@ -298,7 +298,7 @@ class spectro:
                 #name = key+'/kHz'
                 #f.write('%-30s %8s %20.4f'%(name,'&',float(dj[key][1])*1000))
                 name = '$'+key+'$'+'/MHz'
-                f.write('%-30s %8s %20.4f'%(name,'&',float(dj[key][1])))
+                f.write('%-30s %8s %20.7f'%(name,'&',float(dj[key][1])))
                 f.write('\n')
 
         if dtj != 'None':
@@ -306,7 +306,7 @@ class spectro:
                 #name = key+'/kHz'
                 #f.write('%-30s %8s %20.4f'%(name,'&',float(dtj[key][1])*1000))
                 name = '$'+key+'$'+'/MHz'
-                f.write('%-30s %8s %20.4f'%(name,'&',float(dtj[key][1])))
+                f.write('%-30s %8s %20.7f'%(name,'&',float(dtj[key][1])))
                 f.write('\n')
 
         f.write('\n')    
@@ -320,11 +320,11 @@ class spectro:
         f.write('\n')
 
         if de != 'None':
-            f.write('%-30s %8s %20.5f\n'%('$D_e$/MHz','&',float(de[1])))
+            f.write('%-30s %8s %20.7f\n'%('$D_e$/MHz','&',float(de[1])))
         f.write('\n')
         if he != 'None':
             try:
-                f.write('%-30s %8s %20.6f\n'%('$H_e$/Hz','&',float(he[1])))
+                f.write('%-30s %8s %20.7f\n'%('$H_e$/Hz','&',float(he[1])))
             except:
                 f.write('%-30s %8s %20s\n'%('$H_e$/Hz','&',he[1]))
         f.write('\n')
@@ -336,22 +336,21 @@ class spectro:
         f.write("\n")
 
         for key_vib in sorted(vib.keys()):
-#            for i in key_vib:
-#                f.write('%-8s'%i)
-#            f.write('\n')
-#            for k in range(3):
-#                key = keys[k]
-#                name = '$%s_0%s$'%(key[0],key[1])
-#                f.write('%-30s %8s %20.4f'%(name,'&',vib[key_vib][k][-1]))
-#                f.write('\n')
             if key_vib[1] == '0' and key_vib[2] == '0' and key_vib[3] == '0':
-                for k in range(3):
+                for k in range(len(keys)):
                     key = keys[k]
-                    name = '$%s_0$%s'%(key[0],key[1])
-            try:
-               f.write('%-30s %8s %20.4f\n'%(name,'&',vib[key_vib][k][-1]))
-            except:
-               f.write('%-30s %8s %20s\n'%(name,'&',vib[key_vib][k][-1]))
+                    name = '$%s_g$%s'%(key[0],key[1])
+                    try:
+                        f.write('%-30s %8s %20.4f\n'%(name,'&',vib[key_vib][k][-2]))
+                    except:
+                        f.write('%-30s %8s %20s\n'%(name,'&',vib[key_vib][k][-2]))
+                for k in range(len(keys)):
+                    key = keys[k]
+                    name = '$%s_z$%s'%(key[0],key[1])
+                    try:
+                        f.write('%-30s %8s %20.4f\n'%(name,'&',vib[key_vib][k][-1]))
+                    except:
+                        f.write('%-30s %8s %20s\n'%(name,'&',vib[key_vib][k][-2]))
         f.write('\n')
 
         if bs != []:
