@@ -66,3 +66,4 @@ Step5: Run "./run.sh"
        "spec3jm.ifort-O0.static.x < spectro2.in > spectro2.out"
 
 for cucch, need to change order of internal coord in inter_freqs.in
+When there is Fermi resonance, get the new fundamental frequency from spectro2.out 
