@@ -47,7 +47,7 @@ class spectro:
                 int_coord[key] = float(lines[i][40:59])
                 keys.append(key)
             if 'TORSION' in lines[i]:
-                key = ('\Tau', '('+lines[i][61:63].strip()+'-'+lines[i][71:73].strip()+'-'+lines[i][81:83].strip()+')'+lines[i][91:93].strip()+')'+'/\degree')
+                key = ('\Tau', '('+lines[i][61:63].strip()+'-'+lines[i][71:73].strip()+'-'+lines[i][81:83].strip()+'-'+lines[i][91:93].strip()+')'+'/\degree')
                 int_coord[key] = float(lines[i][40:59])
                 keys.append(key) 
 
@@ -79,7 +79,7 @@ class spectro:
  #########   'DTJ':dtj (cm-1, MHz)  (QUARTIC)         #####################
         dtj = {}
         for i in range(llines):
-            if 'DELTA' in lines[i] or 'delta' in lines[i]:
+            if 'DELTA' in lines[i][:10] or 'delta' in lines[i][:10]:
                 c = lines[i].split()
                 key = '$\\'+c[0]+'_{'+c[1]+'}$'
                 dtj[key] = list(map(float,c[-2:]))
@@ -226,7 +226,7 @@ class spectro:
 	                vib_state[key].append(list(map(float, c[-3:])))   # [Requil, Rg, Ralpha]
                 except:
                     vib_state[key].append(list(map(str, c[-3:])))	# in case there is *** in line ##
-        
+
  #########   'int_keys': keys, 'int': int_coord, num_int   ################  
  #########   'taup': taup (cm-1, MHz)                      ################
  #########   'De': de, (cm-1, MHz), 'He': he (cm-1, Hz)    ################
@@ -279,8 +279,8 @@ class spectro:
             for akey in be.keys():
                 key1 = 'cm$^{-1}$'
                 key2 = 'MHz'
-                abc_name1 = akey+'_e$/'+key1
-                abc_name2 = akey+'_e$/'+key2
+                abc_name1 = '$'+akey+'_e$/'+key1
+                abc_name2 = '$'+akey+'_e$/'+key2
                 f.write('%-30s %8s %20.5f\n'%(abc_name1,'&',be[akey][0]))
                 f.write('%-30s %8s %20.5f\n'%(abc_name2,'&',be[akey][1]))
 
@@ -288,7 +288,7 @@ class spectro:
             for key in sorted(dj.keys()):
                 #name = key+'/kHz'
                 #f.write('%-30s %8s %20.4f'%(name,'&',float(dj[key][1])*1000))
-                name = key+'$'+'/MHz'
+                name = key+'/MHz'
                 f.write('%-30s %8s %20.7f'%(name,'&',float(dj[key][1])))
                 f.write('\n')
 
@@ -296,36 +296,35 @@ class spectro:
             for key in sorted(dtj.keys()):
                 #name = key+'/kHz'
                 #f.write('%-30s %8s %20.4f'%(name,'&',float(dtj[key][1])*1000))
-                name = key+'$'+'/MHz'
+                name = key+'/MHz'
                 f.write('%-30s %8s %20.7f'%(name,'&',float(dtj[key][1])))
                 f.write('\n')
-
-        f.write('\n')    
+            f.write('\n')    
 
         if hj != 'None':
             for key in sorted(hj.keys()):
                 #name = key+'/Hz'
                 #f.write('%-30s %8s %20.7f\n'%(name,'&',float(hj[key][1])))
-                name = key+'$'+'/Hz'
+                name = key+'/Hz'
                 f.write('%-30s %8s %20.7f\n'%(name,'&',float(hj[key][1])))
-        f.write('\n')
+            f.write('\n')
 
         if de != 'None':
             f.write('%-30s %8s %20.7f\n'%('$D_e$/MHz','&',float(de[1])))
-        f.write('\n')
+            f.write('\n')
         if he != 'None':
             try:
                 f.write('%-30s %8s %20.7f\n'%('$H_e$/Hz','&',float(he[1])))
             except:
                 f.write('%-30s %8s %20s\n'%('$H_e$/Hz','&',he[1]))
-        f.write('\n')
+            f.write('\n')
     
         if bs != 'None':
             for akey in be.keys():
                 key1 = 'cm$^{-1}$'
                 key2 = 'MHz'
-                abc_name3 = akey+'_0$/'+key1
-                abc_name4 = akey+'_0$/'+key2
+                abc_name3 = '$'+akey+'_0$/'+key1
+                abc_name4 = '$'+akey+'_0$/'+key2
                 f.write('%-30s %8s %20.5f\n'%(abc_name3,'&',bs[akey][2]))
                 f.write('%-30s %8s %20.5f\n'%(abc_name4,'&',bs[akey][3]))
     
@@ -335,15 +334,16 @@ class spectro:
         f.write("\n")
 
         for key_vib in sorted(vib.keys()):
-            if key_vib[1] == '0' and key_vib[2] == '0' and key_vib[3] == '0':
-                for k in range(len(keys)):
+            if sum(list(map(int,key_vib[1:]))) == 0:
+            #if key_vib[1] == '0' and key_vib[2] == '0' and key_vib[3] == '0':
+                for k in range(len(vib[key_vib])):
                     key = keys[k]
                     name = '$%s_g$%s'%(key[0],key[1])
                     try:
                         f.write('%-30s %8s %20.4f\n'%(name,'&',vib[key_vib][k][-2]))
                     except:
                         f.write('%-30s %8s %20s\n'%(name,'&',vib[key_vib][k][-2]))
-                for k in range(len(keys)):
+                for k in range(len(vib[key_vib])):
                     key = keys[k]
                     name = '$%s_z$%s'%(key[0],key[1])
                     try:
