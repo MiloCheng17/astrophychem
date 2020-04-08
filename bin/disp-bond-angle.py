@@ -4,6 +4,7 @@ from mathlib import *
 
 ### Usage: python3 disp-bond-angle.py atom_number Bohr/Ang ###
 ### change the format for output data file in the end      ### 
+### After generate the data file, add energy column to it  ###
 
 atom = int(sys.argv[1])
 unit = sys.argv[2]
