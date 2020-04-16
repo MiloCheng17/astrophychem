@@ -152,7 +152,13 @@ class spectro:
             if "ALPHA FOR PRINCIPAL AXIS" in lines[i]:
                 key = lines[i].split()[4]
                 val_be = lines[i+1].split()[2][:-1]
-                idx = num_be_str.index(val_be)
+                if val_be in num_be_str:
+                    idx = num_be_str.index(val_be)
+                else:
+                    nval_be = round(float(val_be),3)
+                    for ss in range(len(num_be_cm)):
+                        if nval_be == round(num_be_cm[ss],3):
+                            idx = ss
                 be_const[key] = [num_be_cm[idx],num_be_mhz[idx]]
 
  #########   VIBRATIONAL CORRECTIONS TO THE ROTATIONAL CONSTANTS  #########
