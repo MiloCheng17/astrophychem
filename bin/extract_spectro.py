@@ -334,8 +334,9 @@ class spectro:
         f.write("\n")
 
         for key_vib in sorted(vib.keys()):
-            if sum(list(map(int,key_vib[1:]))) == 0:
+            #if sum(list(map(int,key_vib[1:]))) == 0:
             #if key_vib[1] == '0' and key_vib[2] == '0' and key_vib[3] == '0':
+            if sum([int(kb) for kb in key_vib if type(kb)== int or kb.isdigit()]) == 0:
                 for k in range(len(vib[key_vib])):
                     key = keys[k]
                     name = '$%s_g$%s'%(key[0],key[1])
