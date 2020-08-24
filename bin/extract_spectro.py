@@ -364,9 +364,15 @@ class spectro:
                 f.write('%-30s %8s %20.1f\n'%('$\\nv_'+key+'$'+'/cm$^{-1}$','&',freqs[key][1]))
         f.write('\n')
 
-        if freqs != 'None':
-            for key in freqs.keys():
-                f.write('%-30s %8s %20.1f\n'%('$\\nv_'+key+'$'+'/cm$^{-1}$','&',states[key.replace('*','')]))
+#        if freqs != 'None':
+#            for key in freqs.keys():
+#                f.write('%-30s %8s %20.1f\n'%('$\\nv_'+key+'$'+'/cm$^{-1}$','&',states[key.replace('*','')]))
+        if states != 'None':
+            key_list = [int(s) for s in states.keys()]
+            key_list = sorted(key_list)
+            for i in range(len(freqs.keys())):
+                key = str(key_list[i+1])    
+                f.write('%-30s %8s %20.1f\n'%('$\\nv_'+key+'$'+'/cm$^{-1}$','&',states[key]))
     
     
         f.close()
